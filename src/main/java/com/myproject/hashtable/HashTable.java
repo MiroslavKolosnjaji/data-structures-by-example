@@ -23,9 +23,9 @@ public class HashTable {
             list[index] = new LinkedList<>();
         }
 
-        for (var entry : list[index]){
-            if(entry.getKey() == key){
-                entry.setValue(value);
+        for (var e : list[index]){
+            if(e.getKey() == key){
+                e.setValue(value);
                 return;
             }
         }
