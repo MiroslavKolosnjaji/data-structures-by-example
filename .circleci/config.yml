@@ -15,7 +15,23 @@ jobs:
       - restore_cache:
           key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
       - run:
-          command: mvn verify
+          name: Install dependencies
+          command: mvn install
+      - run:
+          name: Build project
+          command: mvn clean compile
+      - run:
+          name: Package project
+          command: mvn package
+      - run:
+          name: Run tests and generate coverage report
+          command: |
+            mvn -B test
+            mvn jacoco:report
+      - run:
+          name: Upload Coverage to Codecov
+          command: |
+            bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN} -f target/site/jacoco/jacoco.xml
       - store_test_results:
           path: target/surefire-reports
       - save_cache:
