@@ -1,124 +1,132 @@
 package com.myproject.arrays;
 
-import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 /**
  * @author Miroslav Kološnjaji
  * @date 27.12.2023
  */
-public class ArrayList<E> {
+public class ArrayList<T> {
 
-    private E[] array;
+    private T[] array;
     private int size;
 
     public ArrayList() {
-        this.array = (E[]) new Object[10];
+        this.array = (T[]) new Object[5];
     }
 
     public ArrayList(int size) {
-        this.array = (E[]) new Object[size];
+        this.array = (T[]) new Object[size];
     }
 
-    //insert
-    public void insert(E element) {
-
-        if(element == null)
-            throw new IllegalArgumentException();
-
-
-        extend();
-        array[size++] = element;
+    public void insert(T value) {
+        expand();
+        array[size++] = value;
     }
 
-
-    //removeAt
     public void removeAt(int index) {
 
-        if(index < 0 || index >= size)
-            throw new IllegalArgumentException();
+        if(size() == 0)
+            throw new NoSuchElementException("List is empty.");
 
-        for (int i = 0; i < size; i++) {
-            if (i == index) {
-                array[i] = null;
-                break;
-            }
-        }
+        if (index < 0 || index >= size())
+            throw new IllegalArgumentException("Index is out of range.");
 
+        for (int i = index; i < size(); i++)
+            array[i] = array[i + 1];
+
+        size--;
         shrink();
-        moveElements(index);
-
     }
 
-
-    //indexOf
-    public int indexOf(E element) {
-        for (int i = 0; i < size; i++) {
-            if (array[i] == element)
+    public int indexOf(T item) {
+        for (int i = 0; i < size(); i++)
+            if (array[i].equals(item))
                 return i;
-        }
+
         return -1;
     }
 
-    //max
-//    public E max(){
-//        if(E instanceof Integer){
-//            E max = array[0];
-//
-//            for (int i = 0; i < size; i++) {
-//                if((int) array[i] > (int) max){
-//                    max = array[i];
-//                }
-//            }
-//            return max;
-//        }
-//
-//        return null;
-//    }
+    public int lastIndexOf(T item) {
 
+        int index = -1;
 
-    private void moveElements(int index) {
+        for (int i = 0; i < size(); i++)
+            if (array[i].equals(item))
+                index = i;
 
-        if (index == size) return;
-
-        for (int i = index; i < size; i++) {
-            E temp = array[i];
-            array[i] = array[i + 1];
-            array[i + 1] = temp;
-        }
-
-        size--;
+        return index;
     }
 
-    //extend
-    private void extend() {
-        if (size == array.length)
-            createNewArray(size * 2);
+    public boolean contains(T item) {
+        return indexOf(item) != -1;
     }
 
-    //shrink
-    private void shrink() {
-        if (getPercentage() < 30)
-            createNewArray(array.length / 2);
-    }
 
-    private void createNewArray(int s) {
-        E[] newArray = (E[]) new Object[s];
-
-        for (int i = 0; i < size; i++) {
-            newArray[i] = array[i];
-        }
-        array = newArray;
-    }
-
-    private double getPercentage() {
-        return ((double) size / array.length) * 100;
-    }
+    public int size() {return size;}
 
     @Override
     public String toString() {
-        E[] items = Arrays.copyOfRange(array, 0, size);
-        System.out.println("Actual length: " + array.length);
-        System.out.println("Size: " + size);
-        return Arrays.toString(items);
+        return getElements();
     }
+
+    private String getElements() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("[");
+
+        for (int i = 0; i < size; i++) {
+
+            stringBuilder.append(array[i].toString());
+
+            if (i + 1 < size)
+                stringBuilder.append(", ");
+        }
+
+        stringBuilder.append("]");
+
+        return stringBuilder.toString();
+
+    }
+
+    private void shrink() {
+
+        if (percentage() < 35 && size > 2)
+            updateNewLength(ExpandingFunction.DIVIDE);
+
+    }
+
+    private void expand() {
+
+        if (size == array.length)
+            updateNewLength(ExpandingFunction.MULTIPLY);
+
+    }
+
+    private void updateNewLength(ExpandingFunction expandingFunction) {
+
+        int newSize = 0;
+
+        switch (expandingFunction) {
+            case MULTIPLY -> newSize = array.length * 2;
+            case DIVIDE -> newSize = array.length / 2;
+        }
+
+
+        T[] newArray = (T[]) new Object[newSize];
+
+        for (int i = 0; i < size; i++)
+            newArray[i] = array[i];
+
+        array = newArray;
+    }
+
+    private double percentage() {
+        return ((double) size / array.length) * 100;
+    }
+
+    private enum ExpandingFunction {
+        DIVIDE, MULTIPLY
+    }
+
 }
