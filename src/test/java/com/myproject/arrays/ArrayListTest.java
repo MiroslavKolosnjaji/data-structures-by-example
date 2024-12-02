@@ -22,16 +22,6 @@ class ArrayListTest {
         arrayList = new ArrayList<>();
     }
 
-    @DisplayName("Array List - constructor")
-    @Test
-    void testArrayListConstructor_withChosenSizeOfElements_returnsNewArrayList() {
-
-        ArrayList<Integer> list = new ArrayList<>(5);
-
-        assertNotNull(list, "Array list should not be null.");
-
-    }
-
     @DisplayName("Array List - insert")
     @Test
     void testInsert_whenValidArgumentProvided_thenCorrect() {
@@ -173,7 +163,57 @@ class ArrayListTest {
         int size = arrayList.size();
 
         assertNotNull(arrayList, "Array list should not be null.");
-        assertEquals(expectedSize, size, "Size count should be 3.");
+        assertEquals(expectedSize, size, "Array list size should be 3.");
+    }
+
+
+    /**
+     * Verifies that the ArrayList expands its capacity when the number of added elements
+     * exceeds the initial capacity. Since internal resizing logic is not directly accessible,
+     * this behavior is verified indirectly by observing the ability to add elements
+     * beyond the initial size without errors.
+     */
+    @DisplayName("Array List Expansion")
+    @Test
+    void testArrayListExpansion_whenInitialSizeIsExceeded() {
+
+        int initialSize = 3;
+        arrayList = new ArrayList<>(initialSize);
+
+        populateList(List.of(1,2,3,4,5));
+
+        boolean isGreater = arrayList.size() > initialSize;
+
+        assertNotNull(arrayList, "Array list should not be null.");
+        assertTrue(isGreater, "Array list size should be greater than initial size.");
+        assertEquals(5, arrayList.size(), "Array list size should be 5.");
+        
+    }
+
+    /**
+     * Verifies that the ArrayList reduces its capacity when elements are removed
+     * and the size falls below a threshold. This behavior is verified indirectly
+     * by removing elements and ensuring that the list still behaves correctly
+     * without errors or inefficiencies.
+     */
+    @DisplayName("Array List Shrink")
+    @Test
+    void testArrayListShrink_whenElementsAreRemoved() {
+
+        int initialSize = 5;
+        arrayList = new ArrayList<>(initialSize);
+        populateList(List.of(1,2,3,4,5,6,7,8,9,10));
+
+        while(arrayList.size() != 0){
+            arrayList.removeAt(0);
+        }
+
+        boolean isSmaller = arrayList.size() < initialSize;
+
+        assertNotNull(arrayList, "Array list should not be null.");
+        assertTrue(isSmaller, "Array list size should be smaller than initial size.");
+        assertEquals(0, arrayList.size(), "Array list size should be 0.");
+
     }
 
     private void populateList(List<Integer> list) {

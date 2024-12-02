@@ -26,14 +26,21 @@ public class ArrayList<T> {
 
     public void removeAt(int index) {
 
-        if(size() == 0)
+        if (size() == 0)
             throw new NoSuchElementException("List is empty.");
 
         if (index < 0 || index >= size())
             throw new IllegalArgumentException("Index is out of range.");
 
-        for (int i = index; i < size(); i++)
+        for (int i = index; i < size(); i++) {
+
+            if (i + 1 >= size()){
+                array[i] = null;
+                break;
+            }
+
             array[i] = array[i + 1];
+        }
 
         size--;
         shrink();
@@ -63,7 +70,9 @@ public class ArrayList<T> {
     }
 
 
-    public int size() {return size;}
+    public int size() {
+        return size;
+    }
 
     @Override
     public String toString() {
