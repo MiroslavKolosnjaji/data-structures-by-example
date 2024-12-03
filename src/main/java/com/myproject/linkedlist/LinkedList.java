@@ -8,155 +8,194 @@ import java.util.Objects;
  * @author Miroslav Kološnjaji
  * @date 27.12.2023
  */
-public class LinkedList<E> {
+public class LinkedList<T> {
 
-    private Node<E> first;
-    private Node<E> last;
+    private Node<T> first;
+    private Node<T> last;
     private int size;
 
-    //addFirst
-    public void addFirst(E element) {
-        var currentItem = new Node<>(element);
+    public LinkedList() {
+    }
+
+    public void addFirst(T item) {
+
+        Node<T> newItem = new Node<>(item);
 
         if (isEmpty()) {
-            first = currentItem;
-            last = currentItem;
+            first = last = newItem;
+            size++;
             return;
         }
 
-        var temp = first;
-        first = currentItem;
-        first.setNext(temp);
+        Node<T> next = first;
+        first = newItem;
+        first.setNext(next);
         size++;
+
     }
 
-    //addLast
-    public void addLast(E element) {
-        var currentItem = new Node<>(element);
+    public void addLast(T item) {
 
         if (isEmpty()) {
-            addFirst(element);
+            addFirst(item);
+            return;
         }
 
-        last.setNext(currentItem);
-        last = currentItem;
+        last.setNext(new Node<>(item));
+        last = last.getNext();
         size++;
     }
 
-    //deleteFirst
     public void deleteFirst() {
+
         if (isEmpty())
             throw new NoSuchElementException();
 
-        if (first == last) {
-            first = last = null;
+        if (hasOneElement()) {
+            remove();
             return;
         }
 
-        var nextFirst = first.getNext();
+        Node<T> next = first.getNext();
         first.setNext(null);
-        first = nextFirst;
+        first = next;
         size--;
     }
 
-    //deleteLast
     public void deleteLast() {
 
         if (isEmpty())
             throw new NoSuchElementException();
 
-        var current = first;
+        Node<T> item = first;
 
-        while (true) {
-            if (current.getNext() == last) {
-                current.setNext(null);
-                last = current;
-                size--;
-                break;
-            }
-            current = current.getNext();
+        if (hasOneElement()) {
+            remove();
+            return;
         }
+
+
+        while (item != null) {
+
+            if (item.getNext() == last)
+                break;
+
+            item = item.getNext();
+        }
+
+        item.setNext(null);
+        last = item;
+        size--;
     }
 
-    //contains
-    public boolean contains(E element) {
-        return indexOf(element) != -1;
-    }
-
-    //indexOf
-    public int indexOf(E element) {
+    public int indexOf(T item) {
         int index = 0;
-        var current = first;
+
+        Node<T> current = first;
 
         while (current != null) {
-            if (current.getValue().equals(element))
+            if (current.getItem().equals(item))
                 return index;
 
             current = current.getNext();
             index++;
         }
+
         return -1;
     }
 
-    //size
-    public int size() {
-        return size + 1;
+    public boolean contains(T item) {
+        return indexOf(item) != -1;
     }
 
-    //isEmpty
-    public boolean isEmpty() {
-        return first == null;
-    }
-
-    private E[] getItems() {
-        E[] itemArray = (E[]) new Object[size + 1];
+    public T[] toArray() {
+        T[] array = (T[]) new Object[size];
 
         var current = first;
         int index = 0;
 
         while (current != null) {
-            itemArray[index++] = current.getValue();
+            array[index++] = current.getItem();
             current = current.getNext();
         }
 
-        return itemArray;
+        return array;
     }
 
-    public E kthNodeFromTheEnd(int distance) {
+    public boolean isEmpty() {
+        return first == null;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public String toString() {
+        return getElements();
+    }
+
+    private String getElements() {
+        StringBuilder sb = new StringBuilder();
+
+        var current = first;
+
+        sb.append("[");
+        while (current != null) {
+
+
+            sb.append(current.getItem());
+            current = current.getNext();
+
+            if (current != null)
+                sb.append(", ");
+
+        }
+
+        sb.append("]");
+
+        return sb.toString();
+    }
+
+    private boolean hasOneElement() {
+        return first == last;
+    }
+
+    private void remove() {
+        first = last = null;
+        size--;
+    }
+
+    //EXERCISE - find the Kth node from the end of a linked list in one pass
+    public T getKthFromTheEnd(int k) {
 
         if (isEmpty())
-            throw new IllegalStateException();
+            throw new NoSuchElementException();
 
-        if (distance > size)
+        if (k < 0 || k > size)
             throw new IllegalArgumentException();
 
-        if (distance == 1)
-            return last.getValue();
+        var firstPointer = first;
+        var secondPointer = first;
 
-        int index = 1;
-        var firstPointer = this.first;
-        var secondPointer = this.first;
-        Node<E> result = null;
+        int index = 0;
         while (firstPointer != null) {
-            if (index >= distance) {
-                if (result == null) {
-                    result = secondPointer;
-                } else {
-                    result = secondPointer.getNext();
-                    secondPointer = secondPointer.getNext();
-                }
 
-            }
+            if (index >= k)
+                secondPointer = secondPointer.getNext();
+
             firstPointer = firstPointer.getNext();
             index++;
         }
-
-        return secondPointer.getValue();
+        return secondPointer.getItem();
     }
 
-    public void printMiddle() {
+
+    //EXERCISE
+    public String printMiddle() {
+
         if (isEmpty())
-            return;
+            return "EMPTY";
 
         var firstPointer = first;
         var secondPointer = first;
@@ -171,16 +210,15 @@ public class LinkedList<E> {
             index++;
         }
 
+        if (index % 2 == 0)
+            return "[" + secondPointer.getItem() + ", " + secondPointer.getNext().getItem() + "]";
 
-        if (index % 2 == 0) {
-            System.out.println("[" + secondPointer + ", " + secondPointer.getNext() + "]");
-        } else {
-            System.out.println("[" + secondPointer + "]");
-        }
+        return "[" + secondPointer.getItem() + "]";
 
 
     }
 
+    //EXERCISE
     public boolean hasLoop() {
         var fastPointer = first;
         var slowPointer = first;
@@ -203,52 +241,42 @@ public class LinkedList<E> {
         return false;
     }
 
+    private static class Node<T> {
 
-    @Override
-    public String toString() {
-        return Arrays.toString(getItems());
-    }
+        private T item;
+        private Node<T> next;
 
-    private class Node<E> {
-        private E value;
-        private Node next;
-
-        public Node(E value) {
-            this.value = value;
+        public Node(T item) {
+            this.item = item;
         }
 
-        public E getValue() {
-            return value;
+        public T getItem() {
+            return item;
         }
 
-        public void setValue(E value) {
-            this.value = value;
+        public void setItem(T item) {
+            this.item = item;
         }
 
-        public Node getNext() {
+        public Node<T> getNext() {
             return next;
         }
 
-        public void setNext(Node next) {
+        public void setNext(Node<T> next) {
             this.next = next;
         }
 
         @Override
-        public String toString() {
-            return value.toString();
-        }
-
-        @Override
-        public boolean equals(Object o) {
+        public final boolean equals(Object o) {
             if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Node<?> node = (Node<?>) o;
-            return Objects.equals(value, node.value) && Objects.equals(next, node.next);
+            if (!(o instanceof Node<?> node)) return false;
+
+            return Objects.equals(item, node.item);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(value, next);
+            return Objects.hashCode(item);
         }
     }
 }
