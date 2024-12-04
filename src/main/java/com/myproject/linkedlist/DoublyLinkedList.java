@@ -1,6 +1,7 @@
 package com.myproject.linkedlist;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
@@ -17,21 +18,26 @@ public class DoublyLinkedList<E> {
     }
 
     public void addFirst(E element) {
+
         var node = new Node<>(element);
+
         if (isEmpty()) {
             first = last = node;
         } else {
             node.setNext(first);
             first.setPrevious(node);
             first = node;
-            size++;
         }
+
+        size++;
     }
 
-    public void addLast(E element){
+    public void addLast(E element) {
 
-        if(isEmpty())
+        if (isEmpty()) {
             addFirst(element);
+            return;
+        }
 
         var node = new Node<>(element);
         node.setPrevious(last);
@@ -40,32 +46,45 @@ public class DoublyLinkedList<E> {
         size++;
     }
 
-    public void deleteFirst(){
+    public void deleteFirst() {
+
+        if (isEmpty())
+            throw new NoSuchElementException();
+
         var newFirst = first.getNext();
         first.setNext(null);
         first = newFirst;
         size--;
     }
 
-    public void deleteLast(){
+    public void deleteLast() {
+
+        if (isEmpty())
+            throw new NoSuchElementException();
+
         last = last.getPrevious();
         last.setNext(null);
         size--;
     }
 
-    public int indexOf(E element){
+    public int indexOf(E element) {
         var current = first;
         int index = 0;
-        while(current != null){
-            if(current.getValue().equals(element))
+        while (current != null) {
+            if (current.getValue().equals(element))
                 return index;
 
+            current = current.getNext();
             index++;
         }
         return -1;
     }
 
-    public boolean contains(E element){
+    public int size() {
+        return size;
+    }
+
+    public boolean contains(E element) {
         return indexOf(element) != -1;
     }
 
@@ -74,12 +93,12 @@ public class DoublyLinkedList<E> {
     }
 
     private E[] getItems() {
-        E[] itemArray = (E[]) new Object[size + 1];
+        E[] itemArray = (E[]) new Object[size];
 
         var current = first;
         int index = 0;
 
-        while(current != null){
+        while (current != null) {
             itemArray[index++] = current.getValue();
             current = current.getNext();
         }
