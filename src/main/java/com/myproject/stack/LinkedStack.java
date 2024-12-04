@@ -1,6 +1,5 @@
-package stack;
+package com.myproject.stack;
 
-import javax.swing.plaf.IconUIResource;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
@@ -11,7 +10,6 @@ public class LinkedStack<E> {
     // additional exercise: create stack using LinkedList
 
     private Node<E> first;
-    private Node<E> last;
     private int size;
 
     public LinkedStack() {
@@ -23,13 +21,12 @@ public class LinkedStack<E> {
 
         if(first == null){
             first  = newItem;
-            last = newItem;
+            size++;
             return;
         }
 
         newItem.setNext(first);
         first = newItem;
-        System.out.println("First value: " + first.getValue());
         size++;
 
     }
@@ -42,11 +39,10 @@ public class LinkedStack<E> {
         }
 
         E item = first.getValue();
-        Node<E> newFirst = first.getNext();
 
-        first = null;
-        first = newFirst;
+        first = first.getNext();
         size--;
+
         return item;
     }
 
@@ -60,18 +56,31 @@ public class LinkedStack<E> {
         return first == null;
     }
 
+    public int size(){ return size; }
+
     @Override
     public String toString() {
+        return getItems();
+    }
+
+    private String getItems() {
+
+        StringBuilder sb = new StringBuilder();
         Node<E> element = first;
 
-        E[] array = (E[]) new Object[size + 1];
-        int index = size;
+        sb.append("[");
+
         while(element != null){
-            array[index--] = element.getValue();
+            sb.append(element.getValue());
             element = element.getNext();
+
+            if(element != null)
+                sb.append(", ");
         }
 
-        return Arrays.toString(array);
+        sb.append("]");
+
+        return sb.toString();
     }
 
     private class Node<E> {
