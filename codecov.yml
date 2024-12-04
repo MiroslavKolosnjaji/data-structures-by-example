@@ -5,6 +5,20 @@ coverage:
         target: 80%
         threshold: 5%
 
+    arraylist:
+      paths:
+        - "src/main/java/com/myproject/arrays/**"
+      target: 85%
+      threshold: 5%
+
+    linkedlist:
+      paths:
+        - "src/main/java/com/myproject/linkedlist/**"
+      target: 85 %
+      threshold: 5%
+
+
+
     patch:
       default:
         target: 80%
