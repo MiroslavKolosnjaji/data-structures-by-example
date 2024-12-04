@@ -6,7 +6,18 @@
 ![GitHub forks](https://img.shields.io/github/forks/MiroslavKolosnjaji/data-structures-by-example)
 
 # data-structures-by-example
-This project contains my implementations of linear data structures, based on the 'Data Structures 1' course from Code with Mosh. The solutions are the result of solving practical exercises that focused on building methods and operations for each data structure.
+This project contains my implementations of linear data structures, based on the 'Data Structures 1' course from Code with Mosh.
+The solutions are the result of solving practical exercises that focused on building methods and operations for each data structure.
+In this project, I decided to consolidate all practical examples from multiple projects that I had previously created. Additionally,
+I removed unnecessary classes used for testing data structures and replaced them with retroactively created unit tests.
+
+ ### Data structures covered in this project
+
+[![ArrayList](https://img.shields.io/badge/ArrayList-%23FF5733?style=for-the-badge&logo=github)](https://github.com/MiroslavKolosnjaji/data-structures-by-example/blob/main/src/main/java/com/myproject/arrays/ArrayList.java)
+[![LinkedList](https://img.shields.io/badge/LinkedList-%23C70039?style=for-the-badge&logo=github)](https://github.com/MiroslavKolosnjaji/data-structures-by-example/tree/main/src/main/java/com/myproject/linkedlist)
+[![Stack](https://img.shields.io/badge/Stack-%23900C3F?style=for-the-badge&logo=github)](https://github.com/MiroslavKolosnjaji/data-structures-by-example/tree/main/src/main/java/com/myproject/stack)
+[![Queue](https://img.shields.io/badge/Queue-%23581845?style=for-the-badge&logo=github)](https://github.com/MiroslavKolosnjaji/data-structures-by-example/tree/main/src/main/java/com/myproject/queue)
+[![Map](https://img.shields.io/badge/Map-%231A5276?style=for-the-badge&logo=github)](https://github.com/MiroslavKolosnjaji/data-structures-by-example/tree/main/src/main/java/com/myproject/hashtable)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
