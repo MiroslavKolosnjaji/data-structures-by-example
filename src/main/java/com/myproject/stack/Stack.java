@@ -4,37 +4,46 @@ import java.util.Arrays;
 
 /**
 @author Miroslav Kološnjaji
-*/public class Stack <E>{
+*/public class Stack <T>{
 
-    private E[] array;
+    private final T[] array;
     private int size;
 
     public Stack() {
-        this.array = (E[]) new Object[10];
+        this.array = (T[]) new Object[5];
     }
 
-    public void push(E element){
+    public Stack(int size) {
+        this.array = (T[]) new Object[size];
+    }
+
+    public void push(T item){
         if(isFull())
             throw new StackOverflowError();
 
-        array[size++] = element;
+        array[size++] = item;
     }
 
-    public E pop(){
+    public T pop(){
 
         if(isEmpty())
             throw new IllegalStateException();
 
-        var element = array[size - 1];
-        array[size - 1] = null;
+        T value = array[size - 1];
         size--;
-        return element;
+
+        return value;
     }
 
-    public E peek(){
+    public T peek(){
         if(isEmpty())
             throw new IllegalStateException();
+
         return array[size - 1];
+    }
+
+    public int size(){
+        return size;
     }
 
     public boolean isEmpty(){
@@ -47,6 +56,22 @@ import java.util.Arrays;
 
     @Override
     public String toString() {
-        return Arrays.toString(Arrays.copyOfRange(array,0,size));
+        return getItems();
+    }
+
+    private String getItems(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+
+        for (int i = 0; i < size; i++) {
+            sb.append(array[i]);
+
+            if(i + 1 < size)
+                sb.append(", ");
+        }
+
+        sb.append("]");
+
+        return sb.toString();
     }
 }
