@@ -8,7 +8,7 @@ import java.util.Arrays;
  */
 public class ArrayQueue<E> {
 
-    private E[] array;
+    private final E[] array;
     private int size;
     private int frontPointer;
     private int rearPointer;
@@ -43,11 +43,15 @@ public class ArrayQueue<E> {
     }
 
     public boolean isEmpty() {
-        return frontPointer == rearPointer;
+        return size == 0 && frontPointer == rearPointer;
     }
 
-    public boolean isFull() {
+    private boolean isFull() {
         return size == array.length;
+    }
+
+    public int size(){
+        return size;
     }
 
     @Override
