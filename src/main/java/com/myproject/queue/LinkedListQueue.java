@@ -27,6 +27,10 @@ public class LinkedListQueue<E> {
     }
 
     public E remove(){
+
+        if(isEmpty())
+            throw new IllegalStateException();
+
         var node = first;
         var newFirst = first.getNext();
         first.setNext(null);
@@ -36,6 +40,11 @@ public class LinkedListQueue<E> {
     }
 
     public E peek(){
+
+        if(isEmpty())
+            return null;
+
+
         return first.getValue();
     }
 
@@ -49,7 +58,7 @@ public class LinkedListQueue<E> {
 
     private String getItems(){
         var current = first;
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append("[");
         while(current != null){
@@ -70,9 +79,9 @@ public class LinkedListQueue<E> {
         return getItems();
     }
 
-    private class Node<E>{
-        private E value;
-        private Node next;
+    private static class Node<E>{
+        private final E value;
+        private Node<E> next;
 
         public Node(E value) {
             this.value = value;
@@ -82,15 +91,11 @@ public class LinkedListQueue<E> {
             return value;
         }
 
-        public void setValue(E value) {
-            this.value = value;
-        }
-
-        public Node getNext() {
+        public Node<E> getNext() {
             return next;
         }
 
-        public void setNext(Node next) {
+        public void setNext(Node<E> next) {
             this.next = next;
         }
     }
