@@ -9,7 +9,7 @@ import java.util.Arrays;
  */
 public class PriorityQueue {
 
-    private int[] array;
+    private final int[] array;
     private int size;
     private int frontPointer;
     private int rearPointer;
@@ -20,7 +20,7 @@ public class PriorityQueue {
     }
 
     public void add(int item) {
-        if(isFull())
+        if (isFull())
             throw new IllegalStateException();
 
         if (isEmpty()) {
@@ -31,13 +31,37 @@ public class PriorityQueue {
         size++;
     }
 
+    public int remove() {
+
+        if (isEmpty())
+            throw new IllegalStateException();
+
+        int item = array[frontPointer];
+        array[frontPointer++] = 0;
+        size--;
+        return item;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    private boolean isFull() {
+        return size == array.length;
+    }
+
+
     private void sort(int item) {
         for (int i = size; i >= 0; i--) {
 
-            if(i + 1 == array.length)
+            if (i + 1 == array.length)
                 array[i] = item;
 
-            if(array[array.length - 1] != 0){
+            if (array[array.length - 1] != 0) {
                 moveItems();
             }
 
@@ -52,30 +76,11 @@ public class PriorityQueue {
     private void moveItems() {
         for (int i = 0; i < array.length; i++) {
 
-            if(frontPointer == array.length)
+            if (frontPointer == array.length)
                 break;
             array[i] = array[frontPointer++];
         }
         frontPointer = 0;
-    }
-
-    public int remove(){
-
-        if(isEmpty())
-            throw new IllegalStateException();
-
-        int item = array[frontPointer];
-        array[frontPointer++] = 0;
-        size--;
-        return item;
-    }
-
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    private boolean isFull(){
-        return size == array.length;
     }
 
     @Override
