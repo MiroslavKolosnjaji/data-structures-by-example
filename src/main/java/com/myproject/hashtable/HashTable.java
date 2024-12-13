@@ -9,7 +9,8 @@ import java.util.Objects;
  */
 public class HashTable {
 
-    LinkedList<Entry>[] list;
+    private final LinkedList<Entry>[] list;
+    private int size;
 
     public HashTable() {
         this.list = new LinkedList[10];
@@ -31,27 +32,36 @@ public class HashTable {
         }
 
         list[index].addLast(entry);
+        size++;
     }
 
     public String get(int key) {
         int index = hashCode(key);
-        return list[index].getLast().getValue();
+        return list[index] == null ? null : list[index].isEmpty() ? null : list[index].getLast().getValue();
     }
 
-    public void remove(int key) {
+    public String remove(int key) {
         int index = hashCode(key);
 
-        if (list[index] == null)
-            throw new IllegalArgumentException();
+        if (list[index] == null || list[index].isEmpty())
+            return null;
 
+        String value = list[index].getLast().getValue();
         list[index].clear();
+        size--;
+
+        return value;
+    }
+
+    public int size(){
+        return size;
     }
 
     private String getItems(){
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for(var item : list){
             if(item != null && !item.isEmpty()){
-                sb.append(item.getLast() + "\n");;
+                sb.append(item.getLast()).append("\n");;
             }
         }
         return sb.toString();
@@ -66,7 +76,7 @@ public class HashTable {
         return getItems();
     }
 
-    private class Entry {
+    private static class Entry {
 
         private int key;
         private String value;

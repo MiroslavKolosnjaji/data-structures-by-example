@@ -112,11 +112,11 @@ public class DoublyLinkedList<E> {
         return Arrays.toString(getItems());
     }
 
-    private class Node<E> {
+    private static class Node<E> {
 
-        private E value;
-        private Node next;
-        private Node previous;
+        private final E value;
+        private Node<E> next;
+        private Node<E> previous;
 
         public Node(E value) {
             this.value = value;
@@ -126,23 +126,19 @@ public class DoublyLinkedList<E> {
             return value;
         }
 
-        public void setValue(E value) {
-            this.value = value;
-        }
-
-        public Node getNext() {
+        public Node<E> getNext() {
             return next;
         }
 
-        public void setNext(Node next) {
+        public void setNext(Node<E> next) {
             this.next = next;
         }
 
-        public Node getPrevious() {
+        public Node<E> getPrevious() {
             return previous;
         }
 
-        public void setPrevious(Node previous) {
+        public void setPrevious(Node<E> previous) {
             this.previous = previous;
         }
 
