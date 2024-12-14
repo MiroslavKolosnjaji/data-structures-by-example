@@ -3,6 +3,8 @@
 ![Java](https://img.shields.io/badge/Java-17-brightgreen)
 ![Data Structures Badge](https://img.shields.io/badge/Data%20Structures-Learning-informational?style=round-square&color=brightgreen)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+![GitHub forks](https://img.shields.io/github/forks/MiroslavKolosnjaji/data-structures-by-example)
+
 
 # data-structures-by-example
 This project contains my implementations of linear data structures, based on the 'Data Structures 1' course from Code with Mosh.
