@@ -5,7 +5,6 @@ import java.util.NoSuchElementException;
 
 /**
  * @author Miroslav Kološnjaji
- * @date 2
  */
 public class HashMap {
 
@@ -18,7 +17,7 @@ public class HashMap {
      * */
 
 
-    private Entry[] entries;
+    private final Entry[] entries;
     private int size;
 
     public HashMap() {
@@ -43,9 +42,6 @@ public class HashMap {
     }
 
     public String get(int key) {
-        if (isEmpty()) {
-            throw new IllegalStateException();
-        }
 
         for (Entry e : entries) {
             if (e != null && e.getKey() == key) {
@@ -57,9 +53,8 @@ public class HashMap {
     }
 
     public String remove(int key) {
-        if (isEmpty()) {
-            throw new NoSuchElementException();
-        }
+
+        if (isEmpty()) return null;
 
         String value = null;
         for (int i = 0; i < entries.length; i++) {
@@ -72,7 +67,15 @@ public class HashMap {
                 break;
             }
         }
+
+        if (value != null)
+            size--;
+
         return value;
+    }
+
+    public int size() {
+        return size;
     }
 
     public boolean isEmpty() {
@@ -89,7 +92,7 @@ public class HashMap {
         return Arrays.toString(entries);
     }
 
-    private class Entry {
+    private static class Entry {
 
         private int key;
         private String value;
