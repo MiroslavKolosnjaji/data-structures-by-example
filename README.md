@@ -9,8 +9,9 @@
 # data-structures-by-example
 This project contains my implementations of linear data structures, based on the 'Data Structures 1' course from Code with Mosh.
 The solutions are the result of solving practical exercises that focused on building methods and operations for each data structure.
-In this project, I decided to consolidate all practical examples from multiple projects that I had previously created. Additionally,
-I removed unnecessary classes used for testing data structures and replaced them with retroactively created unit tests.
+
+In this project, I decided to consolidate all practical examples from multiple projects that I had previously created.
+The project is thoroughly tested using JUnit5, ensuring correctness and full functionality of each data structure
 
  ### Data structures covered in this project
 
